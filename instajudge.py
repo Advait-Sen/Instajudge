@@ -17,6 +17,7 @@ OB = [0, []]
 OW = [0, []]
 
 errors = {
+    'File': "You must create a file called 'Debate.judge' for the app to be able to judge it{}",
     'Comment': 'Irrelevant writing "{}" must be commented out with a "#"',
     'Speaker': 'Invalid speaker "{}", must be one of PM, DP, GB, GW, OL, DO, OB or OW',
     'POI': 'POI requires the person who made the poi, the speaker to whom the poi was addressed, the strength of the '
@@ -27,8 +28,8 @@ errors = {
 
 
 def error(error_type, specific_snippet=''):
-    global line
     if specific_snippet == '':
+        global line
         snippet = line.replace('\n', '')
     else:
         snippet = specific_snippet
@@ -95,7 +96,14 @@ def point(speaker, point_string, score):
 
 
 print('Initialising lexer')
-m = open("Debate.judge")
+
+try:
+    m = open("Debarte.judge")
+except:
+    line = 'No debate found'
+    i = -1
+    error('File', ' ')
+
 print('Lexing...')
 message = m.readlines()
 m.close()
@@ -121,7 +129,7 @@ for i in range(len(message)):
 
 print('Parsing and interpreting complete, printing results...')
 
-print('PM: '+str(PM[0]))
+print('PM: ' + str(PM[0]))
 for item in PM[1]:
     print(item[0])
 
