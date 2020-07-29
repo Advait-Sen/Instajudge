@@ -98,7 +98,7 @@ def point(speaker, point_string, score):
 print('Initialising lexer')
 
 try:
-    m = open("Debarte.judge")
+    m = open("Debate.judge")
 except:
     line = 'No debate found'
     i = -1
