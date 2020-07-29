@@ -1,9 +1,3 @@
----
-name: Pull request
-about: Suggest a fix to an issue
-title: 'Fixes #(issue number)'
----
-
 **Describe the pull request**
 What are you fixing, and how?
 
