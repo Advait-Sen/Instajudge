@@ -59,7 +59,7 @@ Speakers={
 }
 
 errors = {
-    'File': "You must create a file called 'Debate.judge' for the app to be able to judge it{}",
+    'File': "You must create a file called 'Debate.judge' for the app to be able to judge it{}\n\nLexing failed",
     'Comment': 'Irrelevant writing "{}" must be commented out with a "#"',
     'Speaker': 'Invalid speaker "{}", must be one of PM, DP, GB, GW, OL, DO, OB or OW',
     'POI': 'POI requires the person who made the poi, the speaker to whom the poi was addressed, the strength of the '
@@ -104,12 +104,11 @@ def judge(params):
         
         if not (score.isdigit()):
             error('Point',score)
-        
         speaker = params[1]
         sentence_list = params
         sentence_list.remove('point')
         sentence_list.remove(score)
-        sentence_list.remove(params[0])
+        sentence_list.remove(speaker)
         sentence = ' '.join(sentence_list)
         point(speaker_check(speaker), sentence, int(score))
 
@@ -125,7 +124,10 @@ def point(speaker, point_string, score):
 
 
 # todo def response
+def response(speaker):
+    print('WIP')
 
+#End setup
 
 print('Initialising lexer')
 
@@ -159,7 +161,7 @@ for i in range(len(message)):
     else:
         error('Comment')
 
-print('Parsing and interpreting complete, printing results...')
+print('Parsing and interpreting complete, printing results...\n')
 
 for speaker_code in Speakers:
     speaker=Speakers[speaker_code]
@@ -168,6 +170,7 @@ for speaker_code in Speakers:
 
     for point_tuple in speaker['points']:
         print(point_tuple)
+        print(speaker['points'][point_tuple])
     print('')
 
 end()
