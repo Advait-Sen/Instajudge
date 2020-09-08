@@ -81,7 +81,6 @@ def error(error_type, specific_snippet=''):
 
 
 def speaker_check(speaker_name):
-
     try:
         return(Speakers[speaker_name])
     except:
