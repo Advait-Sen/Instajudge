@@ -3,6 +3,7 @@
 .gitattributes
 Debate.judge
 #for test purposes
+test/
 test.py
 
 #vscode
