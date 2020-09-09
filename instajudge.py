@@ -60,16 +60,18 @@ Speakers={
 
 errors = {
     'File': "You must create a file called 'Debate.judge' for the app to be able to judge it{}\n\nLexing failed",
-    'Comment': 'Irrelevant writing "{}" must be commented out with a "#"',
+    'Comment': 'Irrelevant writing "{}" must be commented out with a "#" in front',
     'Speaker': 'Invalid speaker "{}", must be one of PM, DP, GB, GW, OL, DO, OB or OW',
     'POI': 'POI requires the person who made the poi, the speaker to whom the poi was addressed, the strength of the '
-           'poi and the strength of the response, "{}" is invalid',
+        'poi and the strength of the response, "{}" is invalid',
     'Point': 'To define a point you need a speaker, a small sentence about the point, and then a number at the end '
-             'denoting its score out of 30, "{}" is invalid'
+        'denoting its score out of 30, "{}" is invalid',
+    'Rebuttal':'To define a rebuttal, you need to define the current speaker, the maker of the point,and a score for '
+        'the rebuttal, "{}" is invalid'
 }
 
-def error(error_type, specific_snippet=''):
-    if specific_snippet == '':
+def error(error_type='', specific_snippet=''):
+    if bool(specific_snippet):
         global line
         snippet = line.replace('\n', '')
     else:
@@ -80,7 +82,7 @@ def error(error_type, specific_snippet=''):
     end()
 
 
-def speaker_check(speaker_name):
+def speaker_check(speaker_name=''):
     try:
         return(Speakers[speaker_name])
     except:
@@ -90,11 +92,21 @@ def speaker_check(speaker_name):
 def end(): exit(input('\nPress enter to end the interpreter'))
 
 
-def judge(params):
+def judge(param=[]):
+    #removing comments
+    params=[]
+    for word in param:
+        letters=list(word)
+        if len(letters)>0:# for blank spaces
+            if letters[0]=='#':
+                break
+            params.append(word)
+
     if params[0] == 'poi':
-        if (len(params) > 5 and str(params[5]).split('')[0] != '#') or len(params) < 5:
-            error('POI')
-        poi(speaker_check(params[1]), speaker_check(params[2]), int(params[3]), int(params[4]))
+        if len(params)!=5:
+            error('POI',' '.join(params))
+        
+        poi(speaker_check(params[1]), speaker_check(params[2]), checkint(params[3],'POI'), checkint(params[4],'POI'))
 
     if params[0] == 'point':
         score = params[len(params) - 1]
@@ -102,30 +114,37 @@ def judge(params):
         if len(params)==1:
             error('Point')
         
-        if not (score.isdigit()):
-            error('Point',score)
         speaker = params[1]
         sentence_list = params
         sentence_list.remove('point')
         sentence_list.remove(score)
         sentence_list.remove(speaker)
         sentence = ' '.join(sentence_list)
-        point(speaker_check(speaker), sentence, int(score))
+        point(speaker_check(speaker), sentence, checkint(score,'Point'))
+    
+    if params[0]=='rebuttal':
+        if len(params)!=3:
+            error('Rebuttal',' '.join(params))
+        response(speaker_check(params[1]),speaker_check(params[2]),checkint(params[3],'Rebuttal'))
 
 
-def poi(maker, speaker, strength, response):
+def poi(maker={}, speaker={}, strength=0, response=0):
     maker['score'] += strength - response
     speaker['score'] += response - strength
 
 
-def point(speaker, point_string, score):
+def point(speaker={}, point_string='', score=0):
     speaker['score'] += score
-    speaker['points'][point_string]=score # for responses
+    speaker['points'][point_string]=score # for responses, dunno how to implement
 
+def response(speaker={}, maker={}, score=0):
+    speaker['score']+=score
+    maker['score']-=score
 
-# todo def response
-def response(speaker):
-    print('WIP')
+def checkint(arg='',error=''):
+    if arg.isdigit():
+        return int(arg)
+    error(error, arg)
 
 #End setup
 
