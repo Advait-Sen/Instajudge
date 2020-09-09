@@ -1,15 +1,21 @@
 # Instajudge
+
  Judging app for Debate club
 
 ## To contribute
 
 Clone the master branch, and use it normally
 
-## To use in debates
+## How to use in debates
 
-1) Go to [this](https://github.com/Advait-Sen/Instajudge/tree/master) site (which is just another branch of this repository), and click on 'Code'.
-2) Then click on 'Download ZIP', and save it onto your computer.
-3) Next extract the contents of that zip file onto your computer, and then use it normally.
+**NB: Neither versions automatically add scores, as this would require them knowing English.**
+**This means that you have to input scores where required, and as an added bonus this app works in practically any language**
 
-## How to use
+### Python version
+
+Copy instajudge.py into a new folder, and make a text file called `Debate.judge` in the same space.
+Then continue to type the debate in the syntax shown, and you will get the result.
+
+### HTMl version
+
 WIP
