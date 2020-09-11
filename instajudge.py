@@ -62,11 +62,11 @@ errors = {
     'File': "You must create a file called 'Debate.judge' for the app to be able to judge it{}\n\nLexing failed",
     'Comment': 'Irrelevant writing "{}" must be commented out with a "#" in front',
     'Speaker': 'Invalid speaker "{}", must be one of PM, DP, GB, GW, OL, DO, OB or OW',
-    'POI': 'POI requires the person who made the poi, the speaker to whom the poi was addressed, the strength of the '
-        'poi and the strength of the response, "{}" is invalid',
+    'POI': 'POI (point of interest) requires the person who made the poi, the speaker to whom the poi was addressed, '
+        'the strength of the poi and the strength of the response, "{}" is invalid',
     'Point': 'To define a point you need a speaker, a small sentence about the point, and then a number at the end '
         'denoting its score out of 30, "{}" is invalid',
-    'Rebuttal':'To define a rebuttal, you need to define the current speaker, the maker of the point,and a score for '
+    'Rebuttal':'To define a rebuttal, you need to define the current speaker, the maker of the point, and a score for '
         'the rebuttal, "{}" is invalid'
 }
 
@@ -123,9 +123,9 @@ def judge(param=[]):
         point(speaker_check(speaker), sentence, checkint(score,'Point'))
     
     if params[0]=='rebuttal':
-        if len(params)!=3:
+        if len(params)!=4:
             error('Rebuttal',' '.join(params))
-        response(speaker_check(params[1]),speaker_check(params[2]),checkint(params[3],'Rebuttal'))
+        rebuttal(speaker_check(params[1]),speaker_check(params[2]),checkint(params[3],'Rebuttal'))
 
 
 def poi(maker={}, speaker={}, strength=0, response=0):
@@ -137,7 +137,7 @@ def point(speaker={}, point_string='', score=0):
     speaker['score'] += score
     speaker['points'][point_string]=score # for responses, dunno how to implement
 
-def response(speaker={}, maker={}, score=0):
+def rebuttal(speaker={}, maker={}, score=0):
     speaker['score']+=score
     maker['score']-=score
 
@@ -187,9 +187,9 @@ for speaker_code in Speakers:
     speaker_name=speaker['name']
     print('{}: {}'.format(speaker_name,speaker['score']))
 
-    for point_tuple in speaker['points']:
-        print(point_tuple)
-        print(speaker['points'][point_tuple])
+    for point in speaker['points']:
+        print(point)
+        print(speaker['points'][point])
     print('')
 
 end()
