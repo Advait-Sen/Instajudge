@@ -103,51 +103,27 @@ function getSpeakerInput(maker){
     screen.className = "flex-box-container-1";
     screen.id = "Action_screen";
 
-    var PM = document.createElement("button");
-    var DP = document.createElement("button");
-    var GB = document.createElement("button");
-    var GW = document.createElement("button");
-    var OL = document.createElement("button");
-    var DO = document.createElement("button");
-    var OB = document.createElement("button");
-    var OW = document.createElement("button");
-    
+    var PM = document.createElement("button");PM.id="PM"
+    var DP = document.createElement("button");DP.id="DP"
+    var GB = document.createElement("button");GB.id="GB"
+    var GW = document.createElement("button");GW.id="GW"
+    var OL = document.createElement("button");OL.id="OL"
+    var DO = document.createElement("button");DO.id="DO"
+    var OB = document.createElement("button");OB.id="OB"
+    var OW = document.createElement("button");OW.id="OW"
+      
+    speaker_list = [PM,DP,GB,GW,OL,DO,OB,OW]
 
-    PM.className = "btn btn-success";
-    DP.className = "btn btn-success";
-    GB.className = "btn btn-success";
-    GW.className = "btn btn-success";
-    OL.className = "btn btn-success";
-    DO.className = "btn btn-success";
-    OB.className = "btn btn-success";
-    OW.className = "btn btn-success";
-    
-    PM.innerHTML = speakers.get("PM")[0];
-    DP.innerHTML = speakers.get("DP")[0];
-    GB.innerHTML = speakers.get("GB")[0];
-    GW.innerHTML = speakers.get("GW")[0];
-    OL.innerHTML = speakers.get("OL")[0];
-    DO.innerHTML = speakers.get("DO")[0];
-    OB.innerHTML = speakers.get("OB")[0];
-    OW.innerHTML = speakers.get("OW")[0];
-    
-    PM.onclick = function () {document.getElementById("Action_screen").remove();newPOI(maker, "PM")}
-    DP.onclick = function () {document.getElementById("Action_screen").remove();newPOI(maker, "DP")}
-    GB.onclick = function () {document.getElementById("Action_screen").remove();newPOI(maker, "GB")}
-    GW.onclick = function () {document.getElementById("Action_screen").remove();newPOI(maker, "GW")}
-    OL.onclick = function () {document.getElementById("Action_screen").remove();newPOI(maker, "OL")}
-    DO.onclick = function () {document.getElementById("Action_screen").remove();newPOI(maker, "DO")}
-    OB.onclick = function () {document.getElementById("Action_screen").remove();newPOI(maker, "OB")}
-    OW.onclick = function () {document.getElementById("Action_screen").remove();newPOI(maker, "OW")}
-    
-    screen.appendChild(PM)
-    screen.appendChild(DP)
-    screen.appendChild(GB)
-    screen.appendChild(GW)
-    screen.appendChild(OL)
-    screen.appendChild(DO)
-    screen.appendChild(OB)
-    screen.appendChild(OW)
+    for (let index = 0; index < speaker_list.length; index++) {
+        const element = speaker_list[index];
+        element.className = "btn btn-success";
+        element.innerHTML = speakers.get(element.id)[0];
+        element.onclick = function () {
+            document.getElementById("Action_screen").remove();
+            newPOI(maker, element.id)
+        }
+        screen.appendChild(element)
+    }
     
     document.getElementById("Aux_display").appendChild(screen);
 }
