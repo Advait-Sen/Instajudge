@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Instajudge web app</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class ="container-1">
+            <h2>Instajudge web version</h2>
+            <div class="flex-box-container-1">
+                    <button class="btn btn-primary" id = "PM" onclick="openSpeakerMenu('PM')">Prime Minister</button>
+                    <button class="btn btn-danger" id = "OL" onclick="openSpeakerMenu('OL')">Opposition Leader</button>
+            </div>
+            <div class="flex-box-container-1">
+                    <button class="btn btn-primary" id = "DP" onclick="openSpeakerMenu('DP')">Deputy Prime Minister</button>
+                    <button class="btn btn-danger" id = "DO" onclick="openSpeakerMenu('DO')">Deputy Opposition Leader</button>
+            </div>
+            <div class="flex-box-container-1">
+                    <button class="btn btn-primary" id="GB" onclick="openSpeakerMenu('GB')">Member of Government Benches</button>
+                    <button class="btn btn-danger" id ="OB" onclick="openSpeakerMenu('OB')">Member of Opposition Benches</button>
+            </div>
+            <div class="flex-box-container-1">
+                    <button class="btn btn-primary" id="GW" onclick="openSpeakerMenu('GW')">Government Whip</button>
+                    <button class="btn btn-danger" id = "OW" onclick="openSpeakerMenu('OW')">Opposition Whip</button>
+            </div>
+            <div class="flex-box-container-1" id="Speaker_screen_bg"></div>
+            <div class="flex-box-container-1" id="Action_screen"></div>
+        </div>
+    </body>
+    <script src=instajudge.js></script>
+</html>

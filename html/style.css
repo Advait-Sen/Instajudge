@@ -1,0 +1,14 @@
+.container-1{
+    border:  2px solid black;
+    margin: 25 auto;
+    width: 75%;
+    text-align: center;
+}
+
+.flex-box-container-1 {
+    display: flex;
+    border: 2px solid white;
+    padding: 10px;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
