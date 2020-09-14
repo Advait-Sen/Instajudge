@@ -71,6 +71,10 @@ function openSpeakerMenu(speaker) {
 }
 
 function newPoint(maker) {
+    try {
+        document.getElementById("Action_screen").remove();
+    } catch (TypeError) {console.log(TypeError)}
+
     console.log("New point from " + maker);
     var point_string = prompt("Enter the point in a concise form");
     var score = Number(prompt("Enter a score from 1-30 for the point", "0"));
@@ -98,23 +102,23 @@ function getSpeakerInput(maker){
     try {
         document.getElementById("Action_screen").remove();
     } catch (TypeError) { }
-
+    
     var screen = document.createElement("div");
     screen.className = "flex-box-container-1";
     screen.id = "Action_screen";
-
-    var PM = document.createElement("button");PM.id="PM"
-    var DP = document.createElement("button");DP.id="DP"
-    var GB = document.createElement("button");GB.id="GB"
-    var GW = document.createElement("button");GW.id="GW"
-    var OL = document.createElement("button");OL.id="OL"
-    var DO = document.createElement("button");DO.id="DO"
-    var OB = document.createElement("button");OB.id="OB"
-    var OW = document.createElement("button");OW.id="OW"
-      
-    speaker_list = [PM,DP,GB,GW,OL,DO,OB,OW]
-
-    for (let index = 0; index < speaker_list.length; index++) {
+    
+    var PM = document.createElement("button");PM.id="PM";
+    var DP = document.createElement("button");DP.id="DP";
+    var GB = document.createElement("button");GB.id="GB";
+    var GW = document.createElement("button");GW.id="GW";
+    var OL = document.createElement("button");OL.id="OL";
+    var DO = document.createElement("button");DO.id="DO";
+    var OB = document.createElement("button");OB.id="OB";
+    var OW = document.createElement("button");OW.id="OW";
+    
+    speaker_list = [PM,DP,GB,GW,OL,DO,OB,OW];
+    
+    for (var index = 0; index < speaker_list.length; index++) {
         const element = speaker_list[index];
         element.className = "btn btn-success";
         element.innerHTML = speakers.get(element.id)[0];
