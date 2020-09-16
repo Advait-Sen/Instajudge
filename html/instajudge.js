@@ -1,7 +1,7 @@
 //Instajudge app
 
 var speakers = new Map([
-    ["PM", ["Prime Minister", 0, []]],
+    ["PM", ["Prime Minister",0,[]]],
     ["DP", ["Deputy Prime Minister", 0, []]],
     ["GB", ["Member of Government Benches", 0, []]],
     ["GW", ["Government Whip", 0, []]],
@@ -91,9 +91,9 @@ function newPOI(maker, speaker) {
 
     var response = Number(prompt("Enter a score from 1-10 for the response to the POI", "0"));
 
-    speakers.get(maker)[1]+=score-response
+    speakers.get(maker)[1]+=score-response;
 
-    speakers.get(speaker)[1]-=score-response
+    speakers.get(speaker)[1]+=response-score;
 
     console.log("New POI recorded")
 }
@@ -129,7 +129,19 @@ function getSpeakerInput(maker){
         screen.appendChild(element)
     }
     
-    document.getElementById("Aux_display").appendChild(screen);
+    document.getElementById("POI_display").appendChild(screen);
+}
+
+function printReport(){
+    for (const iterator of speakers) {
+        var name = iterator[1][0];
+        var score = iterator [1][1];
+        var points = iterator[1][2];
+
+        console.log(name+": "+score);
+        
+        points.forEach(element => {element.forEach(thing=>{console.log(thing)})});//Printing points and given scores
+    }
 }
 
 function test() { console.log("ttest"); }
