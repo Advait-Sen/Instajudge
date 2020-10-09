@@ -62,12 +62,14 @@ errors = {
     'File': "You must create a file called 'Debate.judge' for the app to be able to judge it{}\n\nLexing failed",
     'Comment': 'Irrelevant writing "{}" must be commented out with a "#" in front',
     'Speaker': 'Invalid speaker "{}", must be one of PM, DP, GB, GW, OL, DO, OB or OW',
-    'POI': 'POI (point of interest) requires the person who made the poi, the speaker to whom the poi was addressed, '
-        'the strength of the poi and the strength of the response, "{}" is invalid',
+    'POI': 'Wrong number of arguments. A POI (point of interest) requires the person who made the poi, the speaker to whom the poi was addressed, '
+        'the strength of the poi and the strength of the response, "{}" has got the wrong number of arguments',
     'Point': 'To define a point you need a speaker, a small sentence about the point, and then a number at the end '
         'denoting its score out of 30, "{}" is invalid',
     'Rebuttal':'To define a rebuttal, you need to define the current speaker, the maker of the point, and a score for '
-        'the rebuttal, "{}" is invalid'
+        'the rebuttal, "{}" is invalid',
+    'Same speaker':'You can\'t have a POI from a speaker who\'s speaking, {} is invalid',
+    'Maths':'You must have a valid number to assign a numeric score, {} is not a number'
 }
 
 def error(error_type='', specific_snippet=''):
@@ -106,12 +108,12 @@ def judge(param=[]):
         if len(params)!=5:
             error('POI',' '.join(params))
         
-        poi(speaker_check(params[1]), speaker_check(params[2]), checkint(params[3],'POI'), checkint(params[4],'POI'))
+        poi(speaker_check(params[1]), speaker_check(params[2]), checkint(params[3]), checkint(params[4]))
 
     if params[0] == 'point':
         score = params[len(params) - 1]
 
-        if len(params)==1:
+        if len(params)<3:
             error('Point')
         
         speaker = params[1]
@@ -120,31 +122,34 @@ def judge(param=[]):
         sentence_list.remove(score)
         sentence_list.remove(speaker)
         sentence = ' '.join(sentence_list)
-        point(speaker_check(speaker), sentence, checkint(score,'Point'))
+        point(speaker_check(speaker), sentence, checkint(score))
     
     if params[0]=='rebuttal':
         if len(params)!=4:
             error('Rebuttal',' '.join(params))
-        rebuttal(speaker_check(params[1]),speaker_check(params[2]),checkint(params[3],'Rebuttal'))
+        rebuttal(speaker_check(params[1]),speaker_check(params[2]),checkint(params[3]))
 
 
 def poi(maker={}, speaker={}, strength=0, response=0):
+    if maker==speaker:
+        error('Same speaker')
     maker['score'] += strength - response
     speaker['score'] += response - strength
 
 
 def point(speaker={}, point_string='', score=0):
     speaker['score'] += score
-    speaker['points'][point_string]=score # for responses, dunno how to implement
+    speaker['points'][point_string]=score
 
 def rebuttal(speaker={}, maker={}, score=0):
     speaker['score']+=score
     maker['score']-=score
 
-def checkint(arg='',error=''):
+def checkint(arg=''):
+    arg=arg.replace('\n','')
     if arg.isdigit():
         return int(arg)
-    error(error, arg)
+    error('Maths', arg)
 
 #End setup
 
