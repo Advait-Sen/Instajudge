@@ -187,7 +187,16 @@ for i in range(len(message)):
 
 print('Parsing and interpreting complete, printing results...\n')
 
-for speaker_code in Speakers:
+
+speaker_score_map={}
+
+for speaker in Speakers.keys():
+    speaker_score_map.setdefault(speaker, Speakers[speaker]['score'])
+
+
+sorted_winners = sorted(speaker_score_map.keys(), key = speaker_score_map.get, reverse = True)
+
+for speaker_code in sorted_winners:
     speaker=Speakers[speaker_code]
     speaker_name=speaker['name']
     print('{}: {}'.format(speaker_name,speaker['score']))
@@ -197,4 +206,3 @@ for speaker_code in Speakers:
         print(speaker['points'][point])
     print('')
 
-end()
