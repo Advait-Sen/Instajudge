@@ -1,4 +1,4 @@
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,21 +9,40 @@
     <body>
         <div class ="container-1">
             <h2>Instajudge web version</h2>
+            <h5>By Advait Sen</h5>
+            <h6>This is an app to help judge debates quickly and more ergonomically compared to the python version
+                (https://github.com/Advait-Sen/Instajudge/blob/master/instajudge.py)</h6>
             <div class="flex-box-container-1">
-                    <button class="btn btn-primary" id = "PM" onclick="openSpeakerMenu('PM')">Prime Minister</button>
-                    <button class="btn btn-danger" id = "OL" onclick="openSpeakerMenu('OL')">Opposition Leader</button>
+                    <button class="btn btn-primary" id = "PM_button" onclick="openSpeakerMenu('PM')">Prime Minister</button>
+                    <button class="btn btn-danger" id = "OL_button" onclick="openSpeakerMenu('OL')">Opposition Leader</button>
             </div>
             <div class="flex-box-container-1">
-                    <button class="btn btn-primary" id = "DP" onclick="openSpeakerMenu('DP')">Deputy Prime Minister</button>
-                    <button class="btn btn-danger" id = "DO" onclick="openSpeakerMenu('DO')">Deputy Opposition Leader</button>
+                    <div class="flex-box-container-1" id = "PM"></div>
+                    <div class="flex-box-container-1" id = "OL"></div>
             </div>
             <div class="flex-box-container-1">
-                    <button class="btn btn-primary" id="GB" onclick="openSpeakerMenu('GB')">Member of Government Benches</button>
-                    <button class="btn btn-danger" id ="OB" onclick="openSpeakerMenu('OB')">Member of Opposition Benches</button>
+                    <button class="btn btn-primary" id = "DP_button" onclick="openSpeakerMenu('DP')">Deputy Prime Minister</button>
+                    <button class="btn btn-danger" id = "DO_button" onclick="openSpeakerMenu('DO')">Deputy Opposition Leader</button>
             </div>
             <div class="flex-box-container-1">
-                    <button class="btn btn-primary" id="GW" onclick="openSpeakerMenu('GW')">Government Whip</button>
-                    <button class="btn btn-danger" id = "OW" onclick="openSpeakerMenu('OW')">Opposition Whip</button>
+                    <div class="flex-box-container-1" id = "DP"></div>
+                    <div class="flex-box-container-1" id = "DO"></div>
+            </div>
+            <div class="flex-box-container-1">
+                    <button class="btn btn-primary" id="GB_button" onclick="openSpeakerMenu('GB')">Member of Government Benches</button>
+                    <button class="btn btn-danger" id ="OB_button" onclick="openSpeakerMenu('OB')">Member of Opposition Benches</button>
+            </div>
+            <div class="flex-box-container-1">
+                    <div class="flex-box-container-1" id = "GB"></div>
+                    <div class="flex-box-container-1" id = "OB"></div>
+            </div>
+            <div class="flex-box-container-1">
+                    <button class="btn btn-primary" id= "GW_button" onclick="openSpeakerMenu('GW')">Government Whip</button>
+                    <button class="btn btn-danger" id = "OW_button" onclick="openSpeakerMenu('OW')">Opposition Whip</button>
+            </div>
+            <div class="flex-box-container-1">
+                    <div class="flex-box-container-1" id = "GW"></div>
+                    <div class="flex-box-container-1" id = "OW"></div>
             </div>
             <div class= "flex-box-container-1" ><button class="btn btn-success" onclick="printReport()">Print report</button></div>
             <div class="flex-box-container-1" id="Speaker_screen_bg"></div>
@@ -38,7 +57,11 @@
                 <div class = "flex-box-container-1" id = "OB_points"></div>
                 <div class = "flex-box-container-1" id = "OW_points"></div>
             </div>
-            <div class="flex-box-container-1" id="Result_screen"></div>
+            <div class="flex-box-container-1" id="Result_screen">
+                <h1 id="outputtext"></h1>
+                <input type="text" id="input" placeholder="Enter text" autocapitalize="off" />
+                <button class="btn btn-danger" onclick="t()">Submit</button>
+            </div>
         </div>
     </body>
     <script src=instajudge.js></script>
