@@ -222,6 +222,7 @@ for speaker_code in sorted_winners:
     speaker = Speakers[speaker_code]
     speaker_name = speaker['name']
     print('{}: {}'.format(speaker_name, speaker['score']))
+    print('{} POIs received, {} made'.format(speaker['received_pois'], speaker['pois_made']))
 
     for point in speaker['points']:
         print(point)
