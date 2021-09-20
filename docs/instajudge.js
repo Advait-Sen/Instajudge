@@ -1,6 +1,6 @@
 //Instajudge app
 
-//Instajudge app
+//Setting up purely debate stuffs
 
 var Speakers={
     'PM' : {
@@ -9,7 +9,6 @@ var Speakers={
         'score':0,
         'team':"First Government",
         'points':{},
-        'pressed':false,
         'default_colour':'btn btn-primary'
     },
 
@@ -19,7 +18,6 @@ var Speakers={
         'score':0,
         'team':"First Government",
         'points':{},
-        'pressed':false,
         'default_colour':'btn btn-primary'
     },
 
@@ -29,7 +27,6 @@ var Speakers={
         'score':0,
         'team':"Second Government",
         'points':{},
-        'pressed':false,
         'default_colour':'btn btn-primary'
     },
 
@@ -39,7 +36,6 @@ var Speakers={
         'score':0,
         'team':"Second Government",
         'points':{},
-        'pressed':false,
         'default_colour':'btn btn-primary'
     },
 
@@ -49,7 +45,6 @@ var Speakers={
         'score':0,
         'team':"First Opposition",
         'points':{},
-        'pressed':false,
         'default_colour':'btn btn-danger'
     },
 
@@ -59,7 +54,6 @@ var Speakers={
         'score':0,
         'team':"First Opposition",
         'points':{},
-        'pressed':false,
         'default_colour':'btn btn-danger'
     },
 
@@ -69,7 +63,6 @@ var Speakers={
         'score':0,
         'team':"Second Opposition",
         'points':{},
-        'pressed':false,
         'default_colour':'btn btn-danger'
     },
 
@@ -79,12 +72,29 @@ var Speakers={
         'score':0,
         'team':"Second Opposition",
         'points':{},
-        'pressed':false,
         'default_colour':'btn btn-danger'
     }
 }
 
-var input = [];
+function poi(maker, speaker, strength, response){
+    Speakers[maker]['score'] += strength - response;
+    Speakers[speaker]['score'] += response - strength;
+}
+
+
+function point(speaker, point_string, score){
+    Speakers[speaker]['score'] += score;
+    Speakers[speaker]['points'][point_string] = score;
+}
+
+function rebuttal(speaker, maker, score){
+    Speakers[speaker]['score'] += score;
+    Speakers[maker]['score'] -= score;
+}
+
+//Setting up web page prettification stuff
+
+var pressed_speaker = '' //The speaker we are currently looking at
 
 String.prototype.format = function() { // thx https://coderwall.com/p/flonoa/simple-string-format-in-javascript
     a = this;
@@ -95,107 +105,19 @@ String.prototype.format = function() { // thx https://coderwall.com/p/flonoa/sim
     return a
 }
 
-
-function openSpeakerMenu(speaker) {
-    var screen = document.getElementById(speaker)
-
-    if (Speakers[speaker]['pressed']){ //highlighting unpressed button and de-highlighting pressed button
-        document.getElementById(speaker + '_button').className = Speakers[speaker]['default_colour'];
-        while(screen.firstChild)
-            screen.lastChild.remove()
-
-        Speakers[speaker]['pressed'] = !(Speakers[speaker]['pressed']);
-
-        return
-    }
-    else
-        document.getElementById(speaker + '_button').className = "btn btn-success";
-    Speakers[speaker]['pressed'] = !(Speakers[speaker]['pressed']);
-
-    var point = document.createElement("button");
-    var poi = document.createElement("button");
-    var rebuttal = document.createElement("button");
-
-    point.id = "new_point_"+speaker;
-    poi.id = "new_poi_" +speaker;
-    rebuttal.id = "new_rebuttal_"+speaker;
-
-    point.innerHTML = "Make a new point";
-    poi.innerHTML = "Make a new POI";
-    rebuttal.innerHTML = "Make a new Rebuttal";
-
-    point.onclick = function () { newPoint(speaker) };
-    poi.onclick = function () { getSpeakerInput(speaker) };
-    rebuttal.onclick = function () { test(speaker) };
-
-    var classname = Speakers[speaker]['default_colour'];
-
-    point.className = classname;
-    poi.className = classname;
-    rebuttal.className = classname;
-
-    screen.appendChild(point);
-    screen.appendChild(poi);
-    screen.appendChild(rebuttal);
-}
-
-function takeInput(parentNode, type, text, speaker){
-    var inputBox = document.createElement("input");
-    inputBox.id = speaker  + " input" + ": " +text;
-    inputBox.type = type;
-    inputBox.placeholder = text;
-
-    var inputButton = document.createElement("button");
-    inputButton.id = speaker  + " button" + ": " +text;
-    inputButton.className = Speakers[speaker]['default_colour']
-    inputButton.onclick = function (){
-        var box = document.getElementById(speaker  + " input" + ": " +text);
-        input.push(box.value); //adding the stuff to the list, and then taking it off later
-        box.remove();
-
-        var button = document.getElementById(speaker  + " button" + ": " +text);
-        button.remove();
-    };
-    parentNode.appendChild(inputBox);
-    parentNode.appendChild(inputButton);
-}
-
-function newPoint(maker) {
+function getSpeakerInput(maker, nextOperation, text){
     try {
-        document.getElementById("Action_screen").remove();
-    } catch (TypeError) {console.log(TypeError)}
-
-    console.log("New point from " + maker);
-    var point_string = prompt("Enter the point in a concise form");
-    var score = Number(prompt("Enter a score from 1-30 for the point", "0"));
-
-    speakers.get(maker)[1] += score;
-    speakers.get(maker)[2].push([point_string, score]);
-    console.log("New point recorded");
-}
-
-function newPOI(maker, speaker) {
-    console.log("New POI from " + maker + " addressing " + speaker);
-
-    var score = Number(prompt("Enter a score from 1-10 for the POI", "0"));
-
-    var response = Number(prompt("Enter a score from 1-10 for the response to the POI", "0"));
-
-    speakers.get(maker)[1]+=score-response;
-
-    speakers.get(speaker)[1]+=response-score;
-
-    console.log("New POI recorded")
-}
-
-function getSpeakerInput(maker){
-    try {
-        document.getElementById("Action_screen").remove();
+        document.getElementById("Speaker_selection_screen").remove();
     } catch (TypeError) { }
 
     var screen = document.createElement("div");
     screen.className = "flex-box-container-1";
-    screen.id = "Action_screen";
+    screen.id = "Speaker_selection_screen";
+    
+    var textHolder = document.createElement("h5");
+    textHolder.innerText = text;
+
+    screen.appendChild(textHolder);
 
     var PM = document.createElement("button");PM.id="PM";
     var DP = document.createElement("button");DP.id="DP";
@@ -210,11 +132,12 @@ function getSpeakerInput(maker){
 
     for (var index = 0; index < speaker_list.length; index++) {
         const element = speaker_list[index];
-        element.className = "btn btn-success";
-        element.innerHTML = speakers.get(element.id)[0];
+        if(Speakers[element.id]['default_colour'] == Speakers[maker]['default_colour']) continue;
+        element.className = Speakers[element.id]['default_colour'];
+        element.innerHTML = Speakers[element.id]['name'];
         element.onclick = function () {
-            document.getElementById("Action_screen").remove();
-            newPOI(maker, element.id)
+            document.getElementById("Speaker_selection_screen").remove();
+            nextOperation.apply(maker, element.id)
         }
         screen.appendChild(element)
     }
@@ -222,21 +145,80 @@ function getSpeakerInput(maker){
     document.getElementById("POI_display").appendChild(screen);
 }
 
-function printReport(){
-    for (const iterator of speakers) {
-        var name = iterator[1][0];
-        var score = iterator [1][1];
-        var points = iterator[1][2];
+function openSpeakerMenu(speaker){
+    try {
+        document.getElementById("Speaker_selection_screen").remove();
+    } catch (TypeError) { }
 
-        console.log(name+": "+score);
+    var screen = document.getElementById(speaker);
 
-        points.forEach(element => {element.forEach(thing=>{console.log(thing)})});//Printing points and given scores
+    if (pressed_speaker == speaker){ //de-highlighting a pressed button
+        document.getElementById(speaker + '_button').className = Speakers[speaker]['default_colour'];
+        while(screen.firstChild){
+            screen.lastChild.remove()
+        }
+        pressed_speaker = '';
+        return
     }
+    //if not, we are pressing a different speaker, and we will make this guy the pressed speaker
+
+    if(pressed_speaker!='') { //deselecting previously clicked speaker if applicable
+        document.getElementById(pressed_speaker + '_button').className = Speakers[pressed_speaker]['default_colour'];
+        pressed_speaker_screen = document.getElementById(pressed_speaker);
+        while(pressed_speaker_screen.firstChild){
+            pressed_speaker_screen.lastChild.remove()
+        }
+    }
+    pressed_speaker = speaker;
+
+    document.getElementById(speaker + '_button').className = "btn btn-success";
+    
+    var point = document.createElement("button");
+    var poi = document.createElement("button");
+    var rebuttal = document.createElement("button");
+
+    point.id = "new_point_"+speaker;
+    poi.id = "new_poi_" +speaker;
+    rebuttal.id = "new_rebuttal_"+speaker;
+
+    point.innerHTML = "Make a new point";
+    poi.innerHTML = "Make a new POI";
+    rebuttal.innerHTML = "Make a new Rebuttal";
+
+    point.onclick = function () { newPoint(speaker) };
+    poi.onclick = function () { getSpeakerInput(speaker, newPOI, "Please select the speaker to whom the POI is addressed: ") };
+    rebuttal.onclick = function () { getSpeakerInput(speaker, newRebuttal, "Please select the speaker whose point is being rebuted: ") };
+
+    var classname = Speakers[speaker]['default_colour'];
+
+    point.className = classname;
+    poi.className = classname;
+    rebuttal.className = classname;
+
+    screen.appendChild(point);
+    screen.appendChild(poi);
+    screen.appendChild(rebuttal);
 }
 
-function test(speaker) { console.log("todo"); }
+function newPoint(speaker){
+    var point_string = prompt("Enter the {0}'s point in a concise form".format(Speakers[speaker]['name']));
+    var score = Number(prompt("Enter a score from 1-30 for the {0}'s point".format(Speakers[speaker]['name']), "0"));
+    point(speaker, point_string, score)
+}
 
-function t(){
-    var t = document.getElementById("input").value;
-    document.getElementById("outputtext").innerHTML = t;
+function newPOI(maker, speaker){
+    var score = Number(prompt("Enter a score from 1-10 for the {0}'s POI".format(Speakers[maker]['name']), "0"));
+    var response = Number(prompt("Enter a score from 1-10 for the {0}'s response to the {1}'s POI".format(
+        Speakers[maker]['name'], 
+        Speakers[speaker]['name']
+    ), "0"));
+    poi(maker, speaker, score, response)
+}
+
+function newRebuttal(speaker, previousSpeaker){
+    var score = Number(prompt("Enter a score from 0-20 for the {0}'s rebuttal of the {1}'s points".format(
+        Speakers[speaker]['name'], 
+        Speakers[previousSpeaker]['name']
+    ), "0"));
+    rebuttal(speaker, previousSpeaker, score);
 }
