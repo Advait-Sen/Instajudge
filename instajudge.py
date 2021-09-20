@@ -5,56 +5,72 @@ Speakers = {
         'name': 'Prime Minister',
         'code': 'PM',
         'score': 0,
-        'points': {}
+        'points': {},
+        'received_pois':0,
+        'pois_made':0,
     },
 
     'DP': {
         'name': 'Deputy Prime Minister',
         'code': 'DP',
         'score': 0,
-        'points': {}
+        'points': {},
+        'received_pois':0,
+        'pois_made':0,
     },
 
     'GB': {
         'name': 'Member of Government Benches',
         'code': 'GB',
         'score': 0,
-        'points': {}
+        'points': {},
+        'received_pois':0,
+        'pois_made':0,
     },
 
     'GW': {
         'name': 'Government Whip',
         'code': 'GW',
         'score': 0,
-        'points': {}
+        'points': {},
+        'received_pois':0,
+        'pois_made':0,
     },
 
     'OL': {
         'name': 'Opposition Leader',
         'code': 'OL',
         'score': 0,
-        'points': {}
+        'points': {},
+        'received_pois':0,
+        'pois_made':0,
     },
 
     'DO': {
         'name': 'Deputy Opposition Leader',
         'code': 'DO',
         'score': 0,
-        'points': {}
+        'points': {},
+        'received_pois':0,
+        'pois_made':0,
     },
 
     'OB': {
         'name': 'Member of Opposition Benches',
         'code': 'OB',
         'score': 0,
-        'points': {}
+        'points': {},
+        'received_pois':0,
+        'pois_made':0,
     },
 
     'OW': {
         'name': 'Opposition Whip',
         'code': 'OW',
         'score': 0,
-        'points': {}
+        'points': {},
+        'received_pois':0,
+        'pois_made':0,
     }
 }
 
@@ -74,7 +90,7 @@ errors = {
 }
 
 
-def error(error_type='', specific_snippet=''):
+def error(error_type, specific_snippet=''):
     if bool(specific_snippet):
         global line
         snippet = line.replace('\n', '')
@@ -137,7 +153,9 @@ def poi(maker={}, speaker={}, strength=0, response=0):
     if maker == speaker:
         error('Same speaker')
     maker['score'] += strength - response
+    maker['pois_made'] += 1;
     speaker['score'] += response - strength
+    speaker['received_pois'] += 1
 
 
 def point(speaker={}, point_string='', score=0):

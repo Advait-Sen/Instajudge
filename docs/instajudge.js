@@ -9,6 +9,8 @@ var Speakers={
         'score':0,
         'team':"First Government",
         'points':{},
+        'received_pois':0,
+        'pois_made':0,
         'default_colour':'btn btn-primary'
     },
 
@@ -18,6 +20,8 @@ var Speakers={
         'score':0,
         'team':"First Government",
         'points':{},
+        'received_pois':0,
+        'pois_made':0,
         'default_colour':'btn btn-primary'
     },
 
@@ -27,6 +31,8 @@ var Speakers={
         'score':0,
         'team':"Second Government",
         'points':{},
+        'received_pois':0,
+        'pois_made':0,
         'default_colour':'btn btn-primary'
     },
 
@@ -36,6 +42,8 @@ var Speakers={
         'score':0,
         'team':"Second Government",
         'points':{},
+        'received_pois':0,
+        'pois_made':0,
         'default_colour':'btn btn-primary'
     },
 
@@ -45,6 +53,8 @@ var Speakers={
         'score':0,
         'team':"First Opposition",
         'points':{},
+        'received_pois':0,
+        'pois_made':0,
         'default_colour':'btn btn-danger'
     },
 
@@ -54,6 +64,8 @@ var Speakers={
         'score':0,
         'team':"First Opposition",
         'points':{},
+        'received_pois':0,
+        'pois_made':0,
         'default_colour':'btn btn-danger'
     },
 
@@ -63,6 +75,8 @@ var Speakers={
         'score':0,
         'team':"Second Opposition",
         'points':{},
+        'received_pois':0,
+        'pois_made':0,
         'default_colour':'btn btn-danger'
     },
 
@@ -72,15 +86,18 @@ var Speakers={
         'score':0,
         'team':"Second Opposition",
         'points':{},
+        'received_pois':0,
+        'pois_made':0,
         'default_colour':'btn btn-danger'
     }
 }
 
 function poi(maker, speaker, strength, response){
     Speakers[maker]['score'] += strength - response;
+    Speakers[maker].pois_made ++;
     Speakers[speaker]['score'] += response - strength;
+    Speakers[speaker].received_pois ++;
 }
-
 
 function point(speaker, point_string, score){
     Speakers[speaker]['score'] += score;
