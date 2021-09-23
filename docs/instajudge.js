@@ -234,7 +234,7 @@ function newPoint(speaker){
     var point_display = document.getElementById(speaker + "_points");
     
     var point_holder = document.createElement("div");
-    point_holder.className = "flex-box-container-1";
+    point_holder.className = "flex-box-container-2";
     point_holder.id = "point: "+ point_string;
     
     var point_string_holder = document.createElement("h4");
