@@ -114,8 +114,8 @@ function rebuttal(speaker, maker, score){
 var pressed_speaker = '' //The speaker we are currently looking at
 
 String.prototype.format = function() { // thx https://coderwall.com/p/flonoa/simple-string-format-in-javascript
-    a = this;
     let a;
+    a = this;
     for (k in arguments) {
         a = a.replace("{" + k + "}", arguments[k])
     }
@@ -131,10 +131,15 @@ function getSpeakerInput(maker, nextOperation, text){
     screen.className = "flex-box-container-1";
     screen.id = "Speaker_selection_screen";
     
-    var textHolder = document.createElement("h5");
+    var textHolder = document.createElement("h3");
     textHolder.innerText = text;
 
+    var buttonHolder = document.createElement("div");
+    buttonHolder.className = "flex-box-container-1";
+    buttonHolder.id = "Speaker_button_holder";
+
     screen.appendChild(textHolder);
+    screen.appendChild(buttonHolder);
 
     var PM = document.createElement("button");PM.id="PM";
     var DP = document.createElement("button");DP.id="DP";
@@ -153,13 +158,13 @@ function getSpeakerInput(maker, nextOperation, text){
         element.className = Speakers[element.id]['default_colour'];
         element.innerHTML = Speakers[element.id]['name'];
         element.onclick = function () {
+            nextOperation.apply(nextOperation, [maker, element.id]);
             document.getElementById("Speaker_selection_screen").remove();
-            nextOperation.apply(maker, element.id)
         }
-        screen.appendChild(element)
+        buttonHolder.appendChild(element)
     }
 
-    document.getElementById("POI_display").appendChild(screen);
+    document.getElementById("Speaker_display").appendChild(screen);
 }
 
 function openSpeakerMenu(speaker){
@@ -171,7 +176,9 @@ function openSpeakerMenu(speaker){
 
     if (pressed_speaker == speaker){ //de-highlighting a pressed button
         document.getElementById(speaker + '_button').className = Speakers[speaker]['default_colour'];
-        while(screen.firstChild){
+        while(screen.childElementCount > 1){
+            if(screen.lastChild.id==speaker + "_score")
+                continue;
             screen.lastChild.remove()
         }
         pressed_speaker = '';
@@ -182,8 +189,10 @@ function openSpeakerMenu(speaker){
     if(pressed_speaker!='') { //deselecting previously clicked speaker if applicable
         document.getElementById(pressed_speaker + '_button').className = Speakers[pressed_speaker]['default_colour'];
         pressed_speaker_screen = document.getElementById(pressed_speaker);
-        while(pressed_speaker_screen.firstChild){
-            pressed_speaker_screen.lastChild.remove()
+        while(pressed_speaker_screen.childElementCount > 1){
+            if(pressed_speaker_screen.lastChild.id==pressed_speaker + "_score")
+                continue;
+            pressed_speaker_screen.lastChild.remove();
         }
     }
     pressed_speaker = speaker;
@@ -220,7 +229,36 @@ function openSpeakerMenu(speaker){
 function newPoint(speaker){
     var point_string = prompt("Enter the {0}'s point in a concise form".format(Speakers[speaker]['name']));
     var score = Number(prompt("Enter a score from 1-30 for the {0}'s point".format(Speakers[speaker]['name']), "0"));
-    point(speaker, point_string, score)
+    point(speaker, point_string, score);
+    updateSpeakerScore(speaker);
+    var point_display = document.getElementById(speaker + "_points");
+    
+    var point_holder = document.createElement("div");
+    point_holder.className = "flex-box-container-1";
+    point_holder.id = "point: "+ point_string;
+    
+    var point_string_holder = document.createElement("h4");
+    point_string_holder.innerHTML = point_string;
+
+    var point_score_holder = document.createElement("h4");
+    point_score_holder.innerHTML = ",   Score: " + score + "    ";
+
+    var point_removal_button = document.createElement("button");
+    point_removal_button.className = "btn btn-danger";
+    point_removal_button.innerHTML = "Delete";
+    point_removal_button.onclick = function () {
+        Speakers[speaker]['score'] -= score;
+        updateSpeakerScore(speaker);
+        delete Speakers[speaker]['points'][point_string];
+        point_holder.remove()
+    }
+
+
+    point_holder.appendChild(point_string_holder);
+    point_holder.appendChild(point_score_holder);
+    point_holder.appendChild(point_removal_button);
+
+    point_display.appendChild(point_holder);
 }
 
 function newPOI(maker, speaker){
@@ -229,7 +267,9 @@ function newPOI(maker, speaker){
         Speakers[maker]['name'], 
         Speakers[speaker]['name']
     ), "0"));
-    poi(maker, speaker, score, response)
+    poi(maker, speaker, score, response);
+    updateSpeakerScore(maker);
+    updateSpeakerScore(speaker);
 }
 
 function newRebuttal(speaker, previousSpeaker){
@@ -238,4 +278,11 @@ function newRebuttal(speaker, previousSpeaker){
         Speakers[previousSpeaker]['name']
     ), "0"));
     rebuttal(speaker, previousSpeaker, score);
+    updateSpeakerScore(speaker);
+    updateSpeakerScore(previousSpeaker);
+}
+
+function updateSpeakerScore(speaker){
+    var speaker_score_display = document.getElementById(speaker + "_score");
+    speaker_score_display.innerHTML = "Score: " + Speakers[speaker]['score'];
 }
