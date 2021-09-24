@@ -18,4 +18,4 @@ Then continue to type the debate in the syntax shown, and you will get the resul
 
 ### HTMl version
 
-Go to this page: <https://advait-sen.github.io/Instajudge> for the web version. (NOTE: Currently broken)
+Go to this page: <https://advait-sen.github.io/Instajudge> for the web version.
