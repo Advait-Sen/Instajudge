@@ -1,10 +1,6 @@
 # Instajudge
 
- Judging app for Debate club
-
-## To contribute
-
-Clone the master branch, and use it normally
+ Judging app for Debate club. Faster than quickjudge.
 
 ## How to use in debates
 
@@ -18,4 +14,4 @@ Then continue to type the debate in the syntax shown, and you will get the resul
 
 ### HTMl version
 
-Go to this page: <https://advait-sen.github.io/Instajudge> for the web version.
+Go to this page: <https://advait-sen.github.io/Instajudge> for the web version. Currently quite bad.
